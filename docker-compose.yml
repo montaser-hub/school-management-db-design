@@ -1,0 +1,17 @@
+# Try the schema locally: `docker compose up -d`
+# PostgreSQL starts with schema.sql and sample-data.sql already loaded.
+# (Local demo credentials only — never reuse them anywhere real.)
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: school-db
+    environment:
+      POSTGRES_DB: school
+      POSTGRES_USER: school
+      POSTGRES_PASSWORD: school
+    ports:
+      - "5433:5432" # 5433 on the host avoids clashing with a local PostgreSQL
+    volumes:
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./sql/sample-data.sql:/docker-entrypoint-initdb.d/02-sample-data.sql:ro
+      - ./sql:/sql:ro
